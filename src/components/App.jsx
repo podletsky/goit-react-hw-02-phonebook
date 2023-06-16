@@ -14,11 +14,10 @@ class App extends Component {
     };
   }
 
-  addContact = (name, number) => {
+  addContact = contactc => {
     const newContact = {
       id: nanoid(),
-      name,
-      number,
+      ...contactc,
     };
     this.setState(prevState => ({
       contacts: [...prevState.contacts, newContact],
@@ -34,12 +33,15 @@ class App extends Component {
       contacts: prevState.contacts.filter(contact => contact.id !== id),
     }));
   };
+  getVisibleContacts = () => {
+    const { contacts, filter } = this.state;
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
 
   render() {
     const { contacts, filter } = this.state;
-    const filteredContacts = contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
 
     return (
       <div className={styles.app}>
@@ -48,7 +50,7 @@ class App extends Component {
         <h2>Contacts</h2>
         <Filter filter={filter} handleFilterChange={this.handleFilterChange} />
         <ContactList
-          contacts={filteredContacts}
+          contacts={this.getVisibleContacts()}
           deleteContact={this.handleDelete}
         />
       </div>

@@ -25,7 +25,7 @@ const ContactForm = ({ addContact, contacts }) => {
     if (isDuplicateName) {
       alert(`Контакт з ім'ям ${name} вже існує!`);
     } else {
-      addContact(name, number);
+      addContact({ name, number });
       setName('');
       setNumber('');
     }
